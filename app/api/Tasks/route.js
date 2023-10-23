@@ -8,10 +8,20 @@ export const POST = async (req) => {
     const taskData = body.formData;
     const NewTask = await Task.create(taskData);
     return NextResponse.json(
-      { status: 201 },
-      { message: "Task created", NewTask }
+      { message: "Task created", NewTask },
+      { status: 201 }
     );
   } catch (error) {
-    return NextResponse.json({ status: 500 }, { message: "error", error });
+    return NextResponse.json({ message: "error", error }, { status: 500 });
+  }
+};
+
+// get all tasks
+export const GET = async () => {
+  try {
+    const tasks = await Task.find();
+    return NextResponse.json({ tasks }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ message: "error", error }, { status: 500 });
   }
 };

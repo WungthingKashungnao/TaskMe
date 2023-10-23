@@ -4,24 +4,38 @@ import PriorityDisplay from "./PriorityDisplay";
 import ProgressDisplay from "./ProgressDisplay";
 import StatusDisplay from "./StatusDisplay";
 
-const TaskCard = () => {
+const TaskCard = ({ task }) => {
+  // format time
+  const formatTimestamp = (timestamp) => {
+    const options = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    };
+
+    const date = new Date(timestamp);
+    const formattedDate = date.toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
   return (
     <div className="flex flex-col bg-card hover:bg-card-hover rounded-md shadow-lg p-3 m-2">
       <div className="flex justify-between mb-3">
-        <PriorityDisplay />
+        <PriorityDisplay priority={task.priority} />
         <DeleteBlock />
       </div>
-      <h4>Task Title</h4>
+      <h4>{task.title}</h4>
       <hr className="h-px border-0 bg-page mb-2" />
-      <p className="whitespace-pre-wrap">
-        This is the task description! Please do this task
-      </p>
+      <p className="whitespace-pre-wrap">{task.description}</p>
       <div className="flex justify-between mt-2">
         <div className="flex flex-col">
-          <p className="text-xs  my-1">10/22/23 11:17</p>
-          <ProgressDisplay />
+          <p className="text-xs  my-1">{formatTimestamp(task.createdAt)}</p>
+          <ProgressDisplay progress={task.progress} />
         </div>
-        <StatusDisplay />
+        <StatusDisplay status={task.status} />
       </div>
     </div>
   );
