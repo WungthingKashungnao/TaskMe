@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* custom classes for tailwind */
+/* custom style for tailwind */
 @layer base {
   h1,
   h2,
@@ -25,7 +25,19 @@
   p {
     @apply text-sm text-default-text;
   }
+  form {
+    @apply rounded-xl p-4;
+  }
+  label {
+    @apply mt-4;
+  }
+  input,
+  select,
+  textarea {
+    @apply m-1 rounded bg-card p-1;
+  }
 }
+/* custom classes for tailwind */
 
 @layer components {
   .icon {
