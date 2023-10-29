@@ -3,6 +3,7 @@ import DeleteBlock from "./DeleteBlock";
 import PriorityDisplay from "./PriorityDisplay";
 import ProgressDisplay from "./ProgressDisplay";
 import StatusDisplay from "./StatusDisplay";
+import Link from "next/link";
 
 const TaskCard = ({ task }) => {
   // format time
@@ -27,16 +28,18 @@ const TaskCard = ({ task }) => {
         <PriorityDisplay priority={task.priority} />
         <DeleteBlock id={task._id} />
       </div>
-      <h4>{task.title}</h4>
-      <hr className="h-px border-0 bg-page mb-2" />
-      <p className="whitespace-pre-wrap">{task.description}</p>
-      <div className="flex justify-between mt-2">
-        <div className="flex flex-col">
-          <p className="text-xs  my-1">{formatTimestamp(task.createdAt)}</p>
-          <ProgressDisplay progress={task.progress} />
+      <Link href={`/TaskPage/${task._id}`} style={{ display: "contents" }}>
+        <h4>{task.title}</h4>
+        <hr className="h-px border-0 bg-page mb-2" />
+        <p className="whitespace-pre-wrap">{task.description}</p>
+        <div className="flex justify-between mt-2">
+          <div className="flex flex-col">
+            <p className="text-xs  my-1">{formatTimestamp(task.createdAt)}</p>
+            <ProgressDisplay progress={task.progress} />
+          </div>
+          <StatusDisplay status={task.status} />
         </div>
-        <StatusDisplay status={task.status} />
-      </div>
+      </Link>
     </div>
   );
 };

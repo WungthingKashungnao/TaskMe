@@ -2,8 +2,9 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const TaskForm = () => {
+const TaskForm = ({ task }) => {
   const router = useRouter(); //to route to another page
+  const EDITMODE = task._id === "new" ? false : true; //to handle for edit/update or create task mode
 
   const startingTaskData = {
     title: "",
@@ -13,8 +14,6 @@ const TaskForm = () => {
     status: "Not started",
     category: "Hardware Problem",
   };
-
-  const [formData, setFormData] = useState(startingTaskData); //state to handle task data
 
   //  function to handle form data
   const handleChange = (e) => {
@@ -29,21 +28,44 @@ const TaskForm = () => {
   // function to handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // posting form data to the Tasks API
-    const res = await fetch("/api/Tasks", {
-      method: "POST",
-      body: JSON.stringify({ formData }),
-      "content-type": "application/json",
-    });
 
-    // if the data is not submitted correctly then throw this error
-    if (!res.ok) {
-      throw new Error("Failed to create new task");
+    if (EDITMODE) {
+      // updating task data to the Tasks API
+      const res = await fetch(`/api/Tasks/${task._id}`, {
+        method: "PUT",
+        body: JSON.stringify({ formData }),
+        "content-type": "application/json",
+      });
+      // if the data is not submitted correctly then throw this error
+      if (!res.ok) {
+        throw new Error("Failed to create new task");
+      }
+    } else if (!EDITMODE) {
+      // posting form data to the Tasks API
+      const res = await fetch("/api/Tasks", {
+        method: "POST",
+        body: JSON.stringify({ formData }),
+        "content-type": "application/json",
+      });
+      // if the data is not submitted correctly then throw this error
+      if (!res.ok) {
+        throw new Error("Failed to create new task");
+      }
     }
-
     router.refresh();
     router.push("/");
   };
+
+  if (EDITMODE) {
+    startingTaskData["title"] = task.title;
+    startingTaskData["description"] = task.description;
+    startingTaskData["priority"] = task.priority;
+    startingTaskData["progress"] = task.progress;
+    startingTaskData["status"] = task.status;
+    startingTaskData["category"] = task.category;
+  }
+
+  const [formData, setFormData] = useState(startingTaskData); //state to handle task data
 
   return (
     <div className="flex justify-center">
@@ -52,7 +74,11 @@ const TaskForm = () => {
         method="post"
         onSubmit={handleSubmit}
       >
-        <h3 className="text-center">Create Your Task</h3>
+        {EDITMODE ? (
+          <h3 className="text-center">Upate Your Task</h3>
+        ) : (
+          <h3 className="text-center">Create Your Task</h3>
+        )}
         {/* title */}
         <label>Title</label>
         <input
@@ -182,7 +208,7 @@ const TaskForm = () => {
         <input
           type="submit"
           className="btn text-default-text"
-          value={"Create Task"}
+          value={EDITMODE ? "Update Task" : "Create Task"}
         />
       </form>
     </div>
