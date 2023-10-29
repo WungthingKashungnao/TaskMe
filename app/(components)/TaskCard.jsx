@@ -25,7 +25,7 @@ const TaskCard = ({ task }) => {
     <div className="flex flex-col bg-card hover:bg-card-hover rounded-md shadow-lg p-3 m-2">
       <div className="flex justify-between mb-3">
         <PriorityDisplay priority={task.priority} />
-        <DeleteBlock />
+        <DeleteBlock id={task._id} />
       </div>
       <h4>{task.title}</h4>
       <hr className="h-px border-0 bg-page mb-2" />
