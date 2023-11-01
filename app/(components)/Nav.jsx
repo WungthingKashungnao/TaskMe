@@ -1,5 +1,6 @@
 import { faHome, faTicket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
 import Link from "next/link";
 
 const Nav = () => {
@@ -13,8 +14,17 @@ const Nav = () => {
           <FontAwesomeIcon icon={faTicket} className="icon" />
         </Link>
       </div>
-      <div>
+      <div className="flex items-center gap-2">
         <p className="text-default-text">legend77@gmail.com</p>
+        <div className="border border-white rounded-full">
+          <Image
+            src="https://xsgames.co/randomusers/avatar.php?g=pixel"
+            width={17}
+            height={17}
+            alt="random user image"
+            className="w-full h-full rounded-full"
+          />
+        </div>
       </div>
     </nav>
   );
